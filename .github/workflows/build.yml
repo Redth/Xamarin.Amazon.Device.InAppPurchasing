@@ -21,19 +21,19 @@ jobs:
       - name: Setup Environment
         run: mkdir ./output
       - name: Build Project
-        run: dotnet build --configuration Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+        run: msbuild -t:build --configuration Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: NuGet Pack - Release
         if: github.event_name == 'release'
         run: |
           arrTag=(${GITHUB_REF//\// })
           VERSION="${arrTag[2]}"
           VERSION="${VERSION//v}"
-          dotnet pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+          msbuild -t:pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: NuGet Pack - CI
         if: github.event_name != 'release'
         run: |
           VERSION=$NUPKG_MAJOR-ci$GITHUB_RUN_ID
-          dotnet pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+          msbuild -t:pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: Upload Artifacts
         uses: actions/upload-artifact@v1
         with:
