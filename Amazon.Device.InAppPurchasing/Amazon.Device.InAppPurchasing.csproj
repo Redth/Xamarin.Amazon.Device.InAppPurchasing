@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <EmbeddedJar Include="Jars\AmazonInAppPurchasing_Android\in-app-purchasing-2.0.76.jar" />
-    <None Include="..\..\External-Dependency-Info.txt" Pack="True" PackagePath="THIRD-PARTY-NOTICES.txt" />
+    <None Include="External-Dependency-Info.txt" Pack="True" PackagePath="THIRD-PARTY-NOTICES.txt" />
   </ItemGroup>
 
     <Import Project="Amazon.Device.InAppPurchasing.targets" />
