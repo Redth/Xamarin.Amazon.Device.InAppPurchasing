@@ -1,0 +1,6 @@
+﻿<metadata>
+	<attr path="/api/package[@name='com.amazon.device.iap']" name="managedName">Amazon.Device.InAppPurchasing</attr>
+	<attr path="/api/package[@name='com.amazon.device.iap.internal.model']" name="managedName">Amazon.Device.InAppPurchasing.Internal.Model</attr>
+	<attr path="/api/package[@name='com.amazon.device.iap.internal.util']" name="managedName">Amazon.Device.InAppPurchasing.Internal.Util</attr>
+	<attr path="/api/package[@name='com.amazon.device.iap.model']" name="managedName">Amazon.Device.InAppPurchasing.Model</attr>
+</metadata>

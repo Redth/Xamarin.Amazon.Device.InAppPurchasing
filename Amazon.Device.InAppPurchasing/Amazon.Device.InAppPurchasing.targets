@@ -1,0 +1,15 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+
+	<Target Name="DownloadJar" BeforeTargets="Build" Condition="!Exists('Jars\AmazonInAppPurchasing_Android\in-app-purchasing-2.0.76.jar')">
+
+		<DownloadFile SourceUrl="https://amzndevresources.com/iap/sdk/AmazonInAppPurchasing_Android.zip" DestinationFolder="Jars" />
+
+		<Microsoft.Build.Tasks.Unzip SourceFiles="Jars\AmazonInAppPurchasing_Android.zip" DestinationFolder="Jars" SkipUnchangedFiles="true" />
+	</Target>
+	
+</Project>
+
+
+
+
