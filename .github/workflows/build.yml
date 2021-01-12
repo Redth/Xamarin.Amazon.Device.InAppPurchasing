@@ -21,7 +21,9 @@ jobs:
       - name: Setup Environment
         run: mkdir ./output
       - name: Build Project
-        run: msbuild -r -t:Build -p:Configuration=Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+        run: |
+          msbuild -r -t:DownloadJar -p:Configuration=Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+          msbuild -r -t:Build -p:Configuration=Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: NuGet Pack - Release
         if: github.event_name == 'release'
         run: |
