@@ -30,12 +30,14 @@ jobs:
           arrTag=(${GITHUB_REF//\// })
           VERSION="${arrTag[2]}"
           VERSION="${VERSION//v}"
-          msbuild -r -t:Pack -p:Configuration=Release -p:IncludeSymbols=True -p:PackageVersion=$VERSION -p:PackageOutputhPath=./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+          mkdir ./artifacts
+          msbuild -r -t:Pack -p:Configuration=Release -p:IncludeSymbols=True -p:PackageVersion=$VERSION -p:PackageOutputhPath=../artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: NuGet Pack - CI
         if: github.event_name != 'release'
         run: |
           VERSION=$NUPKG_MAJOR-ci$GITHUB_RUN_ID
-          msbuild -r -t:Pack -p:Configuration=Release -p:IncludeSymbols=True -p:PackageVersion=$VERSION -p:PackageOutputhPath=./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+          mkdir ./artifacts
+          msbuild -r -t:Pack -p:Configuration=Release -p:IncludeSymbols=True -p:PackageVersion=$VERSION -p:PackageOutputhPath=../artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
       - name: Upload Artifacts
         uses: actions/upload-artifact@v1
         with:
