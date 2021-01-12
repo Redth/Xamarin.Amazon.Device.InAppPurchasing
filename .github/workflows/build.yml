@@ -1,0 +1,59 @@
+name: Build
+
+on: 
+  push:
+  release:
+    types: [published]
+    
+jobs:
+    build:
+      name: Build
+      env:
+        NUPKG_MAJOR: 2.0.76
+      runs-on: macos-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
+      - name: Setup Environment
+        run: mkdir ./output
+      - name: Build Project
+        run: dotnet build --configuration Release ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+      - name: NuGet Pack - Release
+        if: github.event_name == 'release'
+        run: |
+          arrTag=(${GITHUB_REF//\// })
+          VERSION="${arrTag[2]}"
+          VERSION="${VERSION//v}"
+          dotnet pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+      - name: NuGet Pack - CI
+        if: github.event_name != 'release'
+        run: |
+          VERSION=$NUPKG_MAJOR-ci$GITHUB_RUN_ID
+          dotnet pack -c Release --include-symbols --include-source -p:PackageVersion=$VERSION --output ./artifacts ./Amazon.Device.InAppPurchasing/Amazon.Device.InAppPurchasing.csproj
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: NuGet
+          path: ./artifacts
+
+    publish:
+      name: Publish
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download Artifacts
+          uses: actions/download-artifact@v1
+          with:
+            name: NuGet
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 3.1.100
+        - name: NuGet Publish - NuGet.org
+          if: github.event_name == 'release'
+          run: |
+            dotnet nuget push ./NuGet/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_ORG_API_KEY}} --skip-duplicate --no-symbols true
